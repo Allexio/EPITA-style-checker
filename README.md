@@ -4,11 +4,14 @@ DO NOT INCLUDE IN YOUR SUBMISSION !!
 
 ## Prerequisites
 This program requires Python 3 to run. make sure you are not running it with python 2.
-To check your current version, use python --version.
-You may need to use python3 to run the program.
+To check your current version, use `python --version`.
+You may need to use `python3` to run the program if you have multiple versions of python on your system.
 
 ## Running
-To run the program, simply run file_manager.py with python 3
+To check all files in the program's directory, run it without arguments.
+`python file_manager.py`
+To check all the files in a specific directory, give that directory as an argument.
+`python file_manager.py C:\Users\daniel\directory_to_search_in`
 
-## Author
-Made entirely by Daniel Sebton during his first year at EPITA.
+## Authors
+Made entirely by Daniel Sebton.
