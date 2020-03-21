@@ -1,51 +1,4 @@
-""" A file made by Daniel Sebton which iterates through files and checks for
-EPITA coding style errors. Free to use! DO NOT INCLUDE IN YOUR SUBMISSIONS /!\ """
-
-import os.path
-from coding_style_fixer import file_to_fix_selector
-
-def get_file_list(given_path):
-    ''' iterates recursively through subdirectories to get a list of
-    them and returns it '''
-    list_of_files = os.listdir(given_path)
-    all_files = list()
-    for entry in list_of_files:
-        full_path = os.path.join(given_path, entry)
-        if os.path.isdir(full_path):
-            all_files = all_files + get_file_list(full_path)
-        else:
-            all_files.append(full_path)
-    return all_files
-
-def file_selector():
-    ''' calls get file list to obtain a list of all the files in
-    subdirectories and then calls coding_styler to run on each
-    individual file.
-    This function is the one that is called by test_suite.py'''
-    print("= Coding style checks " + 58*"=")
-    style_errors = 0
-    directory = os.path.dirname(os.path.abspath(__file__))
-    all_files = get_file_list(directory)
-    directory = directory.replace("/tests","/src")
-    all_files = get_file_list(directory) + all_files
-    for filename in all_files:
-        if os.path.isfile(filename):
-            if filename[len(filename)-2:len(filename)]==".c" or \
-                filename[len(filename)-2:len(filename)]==".h":
-                with open(filename, 'r') as file:
-                    file = file.read()
-                    keep = filename.find("42sh")
-                    filename = filename[keep:]
-                    style_errors += coding_styler(file, filename)
-                
-    print(str(style_errors) + " coding style error(s) found.")
-    if style_errors > 0:
-        answer = input("Do you want to try and fix them? (y/n)\n")
-        if answer == "y" or answer == "yes":
-            file_to_fix_selector()
-        return 1
-    else:
-        return 0
+""" Includes all implemented rule checks and when to call them """
 
 def coding_styler(file, filename):
     """ loops through each character of given file and calls coding style rules
@@ -296,7 +249,6 @@ def trailing_spaces(index, file, line_number, filename):
 
 def function_args_whitespace(index, file, line_number, filename):
     """ Checks if there is a whitespace between function name and arguments """
-    print("test")
     [line_start, line_end] = find_line(index, file)
     if "for" in file[line_start:line_end] or "while" in file[line_start:line_end]:
         return 0
@@ -381,7 +333,3 @@ def print_error(error_type, index, line_number, file, filename):
           + " of file " + filename)
     print(file[line_start+1:line_end])
     print(" "*(index-line_start) + "^")
-
-if __name__ == "__main__":
-    """ This is for people who will use this as a standalone coding style checker."""
-    file_selector()
