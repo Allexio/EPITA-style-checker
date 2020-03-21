@@ -250,7 +250,7 @@ def trailing_spaces(index, file, line_number, filename):
 def function_args_whitespace(index, file, line_number, filename):
     """ Checks if there is a whitespace between function name and arguments """
     [line_start, line_end] = find_line(index, file)
-    if "for" in file[line_start:line_end] or "while" in file[line_start:line_end]:
+    if "for" in file[line_start:line_end] or "while" in file[line_start:line_end] or "if" in file[line_start:line_end]:
         return 0
     print_error("Potential whitespace between function name and args", index-1, line_number, file, filename)
     return 1
