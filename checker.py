@@ -252,8 +252,10 @@ def function_args_whitespace(index, file, line_number, filename):
     [line_start, line_end] = find_line(index, file)
     if "for" in file[line_start:line_end] or "while" in file[line_start:line_end] or "if" in file[line_start:line_end]:
         return 0
-    print_error("Potential whitespace between function name and args", index-1, line_number, file, filename)
-    return 1
+    if file[index-1].isalpha():
+        print_error("Potential whitespace between function name and args", index-1, line_number, file, filename)
+        return 1
+    return 0
 
 def semicolon_space(index, file, line_number, filename):
     """ Checks if there is no space before and one after a semi-column """
