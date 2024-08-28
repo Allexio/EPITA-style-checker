@@ -13,6 +13,3 @@ To check all files in the program's directory, run it without arguments:
 
 To check all the files in a specific directory, give that directory as an argument: 
 ```python file_manager.py C:\Users\daniel\directory_to_search_in```
-
-## Authors
-Made entirely by Daniel Sebton.
