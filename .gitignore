@@ -131,3 +131,5 @@ dmypy.json
 # C files for testing purposes
 .c
 .h
+*.c 
+*.h

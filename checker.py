@@ -6,6 +6,8 @@ def coding_styler(file, filename):
     line_number = 1
     style_errors = 0
     col_err = False
+    nb_functions = 0
+    in_function = False
     style_errors += blank_start(file, filename)
     for index in range(0, len(file)-1):
         if file[index:index+10] == "#include \"":
@@ -55,7 +57,17 @@ def coding_styler(file, filename):
         if file[index] == '\n':
             col_err = False
             line_number+=1
+        #May be regrouped with ) and } but separated for clarity for now
+        if file[index] == ')' and (index+2 < len(file)-1 and file[index+2] == '{') and not in_function:
+            #May need review as add an error for every function over 10
+            style_errors += count_functions(index, file, line_number, filename, nb_functions)
+            nb_functions += 1 #We keep adding to get total nmumber of functions
+            in_function = True
+        if file[index] == '}' and (index+2 < len(file)-1 or file[index+2] == '\n') and in_function:
+            in_function = False
     style_errors += blank_end(index, file, filename)
+    #Maybe pass number of functions to upper function for a message
+    #print("Number of functions : " + str(nb_functions))
     return style_errors
 
 def find_line(index, file):
@@ -68,14 +80,14 @@ def find_line(index, file):
 
 def open_parenthesis_space(index, file, line_number, filename):
     """ Checks if there is a space after an open parenthesis """
-    if file[index+1] is " ":
+    if file[index+1] == " ":
         print_error("Space after opening parenthesis", index, line_number, file, filename)
         return 1
     return 0
 
 def close_parenthesis_space(index, file, line_number, filename):
     """ Checks if there is a space after an closing parenthesis """
-    if file[index-1] is " ":
+    if file[index-1] == " ":
         print_error("Space before closing parenthesis", index, line_number, file, filename)
         return 1
     return 0
@@ -89,7 +101,7 @@ def void_function(index, file, line_number, filename):
         return 0
     if "'" in file[line_start:index] and "'" in file[index:line_end]:
         return 0
-    if file[index+2] is ';':
+    if file[index+2] == ';':
         return 0
     print_error("Void missing", index, line_number, file, filename)
     return 1
@@ -328,6 +340,14 @@ def while_space(index, file, line_number, filename):
     else:
         print_error("Missing space after while", index, line_number, file, filename)
         return 1
+
+def count_functions(index, file, line_number, filename, count_functions):
+    """ Adds number of functions in file, may need to add the line or function name causing problem """
+    if count_functions >= 10:
+        #May need to review error message, as such to keep same structure
+        print_error("Too many functions, current count: "+ str(count_functions+1) +".", index, line_number, file, filename)
+        return 1
+    return 0
 
 def print_error(error_type, index, line_number, file, filename):
     [line_start, line_end] = find_line(index, file)
