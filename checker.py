@@ -68,14 +68,14 @@ def find_line(index, file):
 
 def open_parenthesis_space(index, file, line_number, filename):
     """ Checks if there is a space after an open parenthesis """
-    if file[index+1] is " ":
+    if file[index+1] == " ":
         print_error("Space after opening parenthesis", index, line_number, file, filename)
         return 1
     return 0
 
 def close_parenthesis_space(index, file, line_number, filename):
     """ Checks if there is a space after an closing parenthesis """
-    if file[index-1] is " ":
+    if file[index-1] == " ":
         print_error("Space before closing parenthesis", index, line_number, file, filename)
         return 1
     return 0
@@ -89,7 +89,7 @@ def void_function(index, file, line_number, filename):
         return 0
     if "'" in file[line_start:index] and "'" in file[index:line_end]:
         return 0
-    if file[index+2] is ';':
+    if file[index+2] == ';':
         return 0
     print_error("Void missing", index, line_number, file, filename)
     return 1
